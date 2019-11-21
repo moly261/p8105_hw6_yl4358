@@ -143,7 +143,7 @@ log_beta12_plot =
   geom_density()+
   labs(
     x = "log(beta1*beta0)",
-    title = " The distribution of log(beta1*beta0)"
+    title = " The distribution of \n log(beta1*beta0)"
   )
 
 r_squared_plot + log_beta12_plot
@@ -151,3 +151,13 @@ r_squared_plot + log_beta12_plot
 
 According to the distribution plots above, two quantities estimated are almost normally distributed, and the average of estimated r squared and log(beta1*beta0` is about 0.91 and 2.02 respectively.
 
+```{r}
+quantile(clean_df$r_squared,c(0.025,0.975))
+
+quantile(clean_df$log_beta12,c(0.025,0.975))
+
+```
+
+The 95% confidence interval for r squared is (`r quantile(clean_df$r_squared,c(0.025,0.975))`).
+
+The 95% confidence interval for log(beta1*beta0) is (`r quantile(clean_df$log_beta12,c(0.025,0.975))`).
