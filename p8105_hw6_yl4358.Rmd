@@ -47,7 +47,7 @@ summary(my_fit)
 
 ```
 
-  I choose baby's length at birth(`blength`), mother's weight at delivery(`delwt`) and average number of cigarettes(`smoken`) smoked per day during pregnancy as predictor variables. Because baby's birth weight is highly related with the mother's health status, I choose `delwt` and `smoken` which represents mother's health status during pregnancy. According to common sense, the taller the baby is , the heavier the baby is, thus I also choose `blength`.
+  I choose baby's length at birth(`blength`), mother's weight at delivery(`delwt`) and average number of cigarettes(`smoken`) smoked per day during pregnancy as predictor variables. Because baby's birth weight is highly related with the mother's health status, I choose `delwt` and `smoken` which represents mother's health status during pregnancy. According to common sense, the taller the baby is , the heavier the baby is, thus I also choose `blength`. And accoding to their p-value, the results are all significant. Therefore I build this model.
 
 
 ```{r}
@@ -58,7 +58,7 @@ birthweight_df %>%
   stat_smooth(method = "lm")
 ```
 
-According to the plot, the residuals of this model have an average about 0 and constant variance.
+According to the plot, the residuals of this model have an average about 0 and non constant variance. And there are some outliers.
 
 ```{r}
 fit1 = lm(bwt ~ blength + gaweeks, data = birthweight_df)
@@ -85,7 +85,10 @@ cv_df %>%
     names_to = "model", 
     values_to = "rmse",
     names_prefix = "rmse_") %>% 
-  mutate(model = fct_inorder(model)) %>% 
+  mutate(
+    model = recode(model, "fit1" = "main effects", "fit2" = "interaction"),
+    model = fct_inorder(model)
+    ) %>% 
   ggplot(aes(x = model, y = rmse)) + geom_violin()
 ```
 Accordint to the `rmse`, the model using head circumference, length,sex and all interactions is the best, the model using length at birth and gestational age is the next, and my fitting model is the worse.
